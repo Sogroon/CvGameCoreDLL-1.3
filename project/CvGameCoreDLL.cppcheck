@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- f1rpo: To be loaded by the Cppcheck GUI for a static analysis of the
+	 CvGameCore source code. I've skimmed through all potential issues
+	 (except those suppressed by the list below) on 11 Nov 2021. However,
+	 I've only addressed a small subset based on what looked especially
+	 hazardous and not too difficult to fix. Warnings about shadowed
+	 variables should perhaps be suppressed until someone has gone through
+	 the whole codebase and gotten rid of all the non-initializing declarations
+	 of local variables. Once that is done, the variable-scope warnings should
+	 be re-enabled as well.
+	 Note that this comment gets deleted when Cppcheck modifies this file. -->
+<project version="1">
+    <builddir>CvGameCoreDLL-cppcheck-build-dir</builddir>
+    <platform>win32W</platform>
+    <importproject>CvGameCoreDLL.sln</importproject>
+    <analyze-all-vs-configs>false</analyze-all-vs-configs>
+    <libraries>
+        <library>windows</library>
+    </libraries>
+    <suppressions>
+        <suppression>passedByValue</suppression>
+        <suppression>unusedFunction</suppression>
+        <suppression>noConstructor</suppression>
+        <suppression>operatorEq</suppression>
+        <suppression>useInitializationList</suppression>
+        <suppression>noExplicitConstructor</suppression>
+        <suppression>noCopyConstructor</suppression>
+        <suppression>noOperatorEq</suppression>
+        <suppression>variableScope</suppression>
+        <suppression>knownConditionTrueFalse</suppression>
+    </suppressions>
+</project>
