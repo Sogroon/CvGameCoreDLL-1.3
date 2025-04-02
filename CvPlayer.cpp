@@ -8854,6 +8854,65 @@ void CvPlayer::findNewCapital()
 				iValue += pLoopCity->getCorporationCount();
 				iValue += (pLoopCity->getNumGreatPeople() * 2);
 
+//doto113 keldath find the best capital enhanced start 
+		//BuildingClassTypes eCapitalBuilding2 = (BuildingClassTypes)GC.getInfoTypeForString(GC.getDefineSTRING("CAPITAL_BUILDINGCLASS_2"));
+		BuildingTypes eCapitalBuilding2 =(BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings((BuildingTypes)GC.getInfoTypeForString(
+		GC.getDefineSTRING("CAPITAL_BUILDINGCLASS_2"))); 
+		if (eCapitalBuilding2 != NO_BUILDING)
+		{
+			int eCapitalBuilding2Amnt = pLoopCity->getNumBuilding(eCapitalBuilding2);
+			if (eCapitalBuilding2Amnt > 0)
+				iValue += pLoopCity->getPopulation() * 2;
+		}
+		//BuildingClassTypes eCapitalBuilding3 = (BuildingClassTypes)GC.getInfoTypeForString(GC.getDefineSTRING("CAPITAL_BUILDINGCLASS_3"));
+		BuildingTypes eCapitalBuilding3 =(BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings((BuildingTypes)GC.getInfoTypeForString(
+		GC.getDefineSTRING("CAPITAL_BUILDINGCLASS_3")));
+		if (eCapitalBuilding3 != NO_BUILDING)
+		{
+			int eCapitalBuilding3Amnt = pLoopCity->getNumBuilding(eCapitalBuilding3);
+			if (eCapitalBuilding3Amnt > 0)
+				iValue += pLoopCity->getPopulation() * 2;
+		}
+		//BuildingClassTypes eCapitalBuilding4 = (BuildingClassTypes)GC.getInfoTypeForString(GC.getDefineSTRING("CAPITAL_BUILDINGCLASS_4"));
+		BuildingTypes eCapitalBuilding4 =(BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings((BuildingTypes)GC.getInfoTypeForString(
+		GC.getDefineSTRING("CAPITAL_BUILDINGCLASS_4")));
+		if (eCapitalBuilding4 != NO_BUILDING)
+		{
+			int eCapitalBuilding4Amnt = pLoopCity->getNumBuilding(eCapitalBuilding4);
+			if (eCapitalBuilding4Amnt > 0)
+				iValue += pLoopCity->getPopulation() * 2;
+		}
+		//BuildingClassTypes eCapitalBuilding5 = (BuildingClassTypes)GC.getInfoTypeForString(GC.getDefineSTRING("CAPITAL_BUILDINGCLASS_5"));
+		BuildingTypes eCapitalBuilding5 =(BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings((BuildingTypes)GC.getInfoTypeForString(
+		GC.getDefineSTRING("CAPITAL_BUILDINGCLASS_5")));
+		if (eCapitalBuilding5 != NO_BUILDING)
+		{
+			int eCapitalBuilding5Amnt = pLoopCity->getNumBuilding(eCapitalBuilding5);
+			if (eCapitalBuilding5Amnt > 0)
+				iValue += pLoopCity->getPopulation() * 2;
+		}
+		//BuildingClassTypes eCapitalBuilding6 = (BuildingClassTypes)GC.getInfoTypeForString(GC.getDefineSTRING("CAPITAL_BUILDINGCLASS_6"));
+		BuildingTypes eCapitalBuilding6 =(BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings((BuildingTypes)GC.getInfoTypeForString(
+		GC.getDefineSTRING("CAPITAL_BUILDINGCLASS_6")));
+		if (eCapitalBuilding6 != NO_BUILDING)
+		{
+			int eCapitalBuilding6Amnt = pLoopCity->getNumBuilding(eCapitalBuilding6);
+			if (eCapitalBuilding6Amnt > 0)
+				iValue += pLoopCity->getPopulation() * 2;
+		}
+		//BuildingClassTypes eCapitalBuilding7 = (BuildingClassTypes)GC.getInfoTypeForString(GC.getDefineSTRING("CAPITAL_BUILDINGCLASS_7"));
+		BuildingTypes eCapitalBuilding7 =(BuildingTypes)GC.getCivilizationInfo(getCivilizationType()).getCivilizationBuildings((BuildingTypes)GC.getInfoTypeForString(
+		GC.getDefineSTRING("CAPITAL_BUILDINGCLASS_7")));
+		if (eCapitalBuilding7 != NO_BUILDING)
+		{
+			int eCapitalBuilding7Amnt = pLoopCity->getNumBuilding(eCapitalBuilding7);
+			if (eCapitalBuilding7Amnt > 0)
+				iValue += pLoopCity->getPopulation() * 2;
+		}
+		iValue += pLoopCity->getNumNationalWonders();
+		iValue += pLoopCity->getNumWorldWonders();
+//doto113 keldath find the best capital enhanced start 
+
 				iValue *= (pLoopCity->calculateCulturePercent(getID()) + 100);
 				iValue /= 100;
 
@@ -8874,6 +8933,9 @@ void CvPlayer::findNewCapital()
 		}
 		FAssertMsg(!(pBestCity->getNumRealBuilding(eCapitalBuilding)), "(pBestCity->getNumRealBuilding(eCapitalBuilding)) did not return false as expected");
 		pBestCity->setNumRealBuilding(eCapitalBuilding, 1);
+		//doto add anarchy best capital enhanced
+		changeAnarchyTurns(getCapitalLossAnarchyLength());
+		//
 	}
 }
 
@@ -12384,6 +12446,37 @@ void CvPlayer::revolution(CivicTypes* paeNewCivics, bool bForce)
 	delete [] paeOldCivics;
 // BUG - Revolution Event - end
 }
+//doto 113 -> loose capital anarchy start
+int CvPlayer::getCapitalLossAnarchyLength() const // advc.132
+{
+	int const iMaxAnarchyTurns = getMaxAnarchyTurns(); // advc
+	if (iMaxAnarchyTurns == 0)
+		return 0;
+	//if (/* <advc.132> */ !bIgnoreGoldenAge && /* </advc.132> */ isGoldenAge())
+   //	 return 0;
+
+	int iAnarchyLength = 0;
+ 
+	static int const iBASE_LOSS_CAPITAL_ANARCHY_LENGTH = GC.getDefineINT("BASE_LOSS_CAPITAL_ANARCHY_LENGTH"); // advc.opt
+	iAnarchyLength += iBASE_LOSS_CAPITAL_ANARCHY_LENGTH;
+	iAnarchyLength += ((getNumCities() * GC.getInfo(GC.getMap().
+							getWorldSize()).getNumCitiesAnarchyPercent()) / 100);
+
+	iAnarchyLength = ((iAnarchyLength * std::max(0, getAnarchyModifier() + 100)) / 100);
+
+	if (iAnarchyLength == 0)
+		return 0;
+
+	iAnarchyLength *= GC.getInfo(GC.getGame().getGameSpeedType()).getAnarchyPercent();
+	iAnarchyLength /= 100;
+
+	iAnarchyLength *= GC.getInfo(GC.getGame().getStartEra()).getAnarchyPercent();
+	iAnarchyLength /= 100;
+
+	return range(iAnarchyLength, 1, iMaxAnarchyTurns);
+}
+//doto 113 -> loose capital anarchy end 
+
 
 
 int CvPlayer::getCivicPercentAnger(CivicTypes eCivic, bool bIgnore) const
@@ -15728,6 +15821,7 @@ void CvPlayer::setCombatExperience(int iExperience)
 /*************************************************************************************************/
 		if (!isBarbarian() || GC.getGameINLINE().isOption(GAMEOPTION_BARBARIAN_GENERALS))
 /*************************************************************************************************/
+// Unique great commanders merge; thanks to merkava and f1rpo
 		{
 			int iExperienceThreshold = greatPeopleThreshold(true);
 			if (m_iCombatExperience >= iExperienceThreshold && iExperienceThreshold > 0)
@@ -32723,6 +32817,10 @@ int CvPlayer::getEnslavementChance() const
 
 void CvPlayer::changeEnslavementChance(int iChange)
 {
+//	if (iChange == 0)
+//	{
+//		m_iEnslavementChance = iChange;
+//	}
 	if (iChange != 0)
 	{
 		m_iEnslavementChance += iChange;
@@ -35166,6 +35264,9 @@ void CvPlayer::clearModifierTotals()
 	m_iSpaceProductionModifier = 0;
 	m_iCityDefenseModifier = 0;
 	m_iAllowsAmbassadorsCount = 0;
+	//Chronicles of Mankind fix attempts 
+	m_iEnslavementChance = 0;
+
 /************************************************************************************************/
 /* REVDCM								 09/02/10								phungus420	*/
 /*																							  */

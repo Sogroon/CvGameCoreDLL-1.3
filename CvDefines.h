@@ -61,7 +61,8 @@
 #define RANDPLOT_NOT_VISIBLE_TO_CIV						(0x00000020)
 #define RANDPLOT_NOT_CITY											(0x00000040)
 
-#define MAX_CIV_PLAYERS												(50)
+// Max civs
+#define MAX_CIV_PLAYERS												(100)
 #define MAX_CIV_TEAMS													(MAX_CIV_PLAYERS)
 #define MAX_PLAYERS														(MAX_CIV_PLAYERS + 1)
 #define MAX_TEAMS															(MAX_PLAYERS)

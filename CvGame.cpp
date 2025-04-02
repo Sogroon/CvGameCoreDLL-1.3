@@ -1293,10 +1293,10 @@ void CvGame::updatePenultimateEra()
 		if (isOption((GameOptionTypes)iOption))
 			break;
 	}
-	int iEra = 5 - (iOption - GAMEOPTION_NO_FUTURE);
+	int iEra = 6 - (iOption - GAMEOPTION_NO_FUTURE);
 	FAssertBounds(0, GC.getNumEraInfos(), iEra);
 	iEra = std::max<int>(iEra, getStartEra());
-	if (iEra >= GC.getNumEraInfos() - 1)
+	if (iEra >= GC.getNumEraInfos())
 	{
 		FAssertMsg(false, "Penultimate not before ultimate era");
 		return;

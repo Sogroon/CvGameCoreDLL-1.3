@@ -5644,6 +5644,9 @@ int CvCityAI::AI_projectValue(ProjectTypes eProject)
 		iValue += (std::max(0, (GC.getProjectInfo((ProjectTypes)iI).getProjectsNeeded(eProject) - GET_TEAM(getTeam()).getProjectCount(eProject))) * 10);
 	}
 
+	if (eProject == GC.getInfoTypeForString("PROJECT_THEORY_OF_EVOLUTION"))
+		iValue += 5;
+
 /************************************************************************************************/
 /* Afforess					  Start		 01/02/10											   */
 /*																							  */

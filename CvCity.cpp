@@ -1806,8 +1806,8 @@ void CvCity::doTurnMiscAsync()
 	doConnectednessCalculations();
 	//Promotes Units if there is a building that allows it
 	doPromotion();
-	//Does vicinity bonus checks
-	doVicinityBonus();
+	//Does vicinity bonus checks - moved after line 2231
+	//doVicinityBonus();
 	//Checks conditions of buildings, may disable or enable some
 	checkBuildings(true, false, true, true, false);
 	//Extra Hammer from settling on Forest
@@ -2233,6 +2233,8 @@ void CvCity::doTurnPostProduction()
 /************************************************************************************************/
 /* Afforess	                     END                                                            */
 /************************************************************************************************/
+	//Does vicinity bonus checks - moved after line 2231
+	doVicinityBonus();
 
 #ifdef CAN_TRAIN_CACHING
 	//	Outside the scope of the city's turn where we expect to be using cached values turn
@@ -27272,6 +27274,11 @@ void CvCity::clearModifierTotals()
 	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
 	{
 		m_paiBonusDefenseChanges[iI] = 0;
+	}
+		
+	for (iI = 0; iI < GC.getNumBonusInfos(); iI++)
+	{
+		m_pabHadVicinityBonus[iI] = false;
 	}
 
 	m_aBuildingCommerceModifier.clear();

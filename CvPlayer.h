@@ -460,6 +460,9 @@ public:
 	void foundCorporation(CorporationTypes eCorporation);																										// Exposed to Python
 
 	DllExport int getCivicAnarchyLength(CivicTypes* paeNewCivics) const;																	// Exposed to Python
+	//doto 113 -> loose capital anarchy start
+	int getCapitalLossAnarchyLength() const;						// Exposed to Python
+	//doto 113 -> loose capital anarchy end
 	DllExport int getReligionAnarchyLength() const;																												// Exposed to Python
 
 	DllExport int unitsRequiredForGoldenAge() const;																											// Exposed to Python
